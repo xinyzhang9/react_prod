@@ -4,46 +4,51 @@ import './App.css';
 import {addTodo,generateID} from './lib/TodoHelpers'
 
 class App extends Component {
-  constructor(){
-    super();
-    this.state = {
-      todos:[
-        {id:1,name:'Learn JSX',isComplete:true},
-        {id:2,name:'Build App',isComplete:false},
-        {id:3,name:'Ship it',isComplete:false}
-      ],
-      currentTodo: ''
-    }
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+  state = {
+    todos:[
+      {id:1,name:'Learn JSX',isComplete:true},
+      {id:2,name:'Build App',isComplete:false},
+      {id:3,name:'Ship it',isComplete:false}
+    ],
+    currentTodo: ''
   }
 
-  handleSubmit(e){
+  handleSubmit = (e) => {
     e.preventDefault();
     const newID = generateID();
     const newTodo = {id:newID, name: this.state.currentTodo, isComplete: false}
     const updatedTodos = addTodo(this.state.todos, newTodo)
     this.setState({
       todos: updatedTodos,
-      currentTodo: ''
+      currentTodo: '',
+      errorMessage: ''
     })
   }
 
-  handleInputChange(e){
+  handleEmptySubmit = (e) => {
+    e.preventDefault();
+    this.setState({
+      errorMessage: 'Please supply a todo name'
+    })
+  }
+
+  handleInputChange = (e) => {
     this.setState({
       currentTodo:e.target.value
     })
   }
   render(){
+    const submitHandler = this.state.currentTodo? this.handleSubmit : this.handleEmptySubmit;
     return (
       <div className='App'>
         <div className='App-header'>
           <h2>React Todos</h2>
         </div>
         <div className='Todo-App'>
+        {this.state.errorMessage && <span className='error'>{this.state.errorMessage}</span>}
           <TodoForm handleInputChange={this.handleInputChange}
                     currentTodo={this.state.currentTodo}
-                    handleSubmit={this.handleSubmit}/>
+                    handleSubmit={submitHandler}/>
           <TodoList todos={this.state.todos}/>
         </div>
       </div>
