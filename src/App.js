@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {TodoForm, TodoList} from './Components/Todo'
 import './App.css';
-import {addTodo,generateID} from './lib/TodoHelpers'
+import {addTodo,generateID,findById, toggleTodo, updateTodo} from './lib/TodoHelpers'
 
 class App extends Component {
   state = {
@@ -11,6 +11,13 @@ class App extends Component {
       {id:3,name:'Ship it',isComplete:false}
     ],
     currentTodo: ''
+  }
+
+  handleToggle = (id) => {
+    const todo = findById(id,this.state.todos);
+    const toggled = toggleTodo(todo);
+    const updatedTodos = updateTodo(this.state.todos, toggled);
+    this.setState({todos: updatedTodos});
   }
 
   handleSubmit = (e) => {
@@ -49,7 +56,7 @@ class App extends Component {
           <TodoForm handleInputChange={this.handleInputChange}
                     currentTodo={this.state.currentTodo}
                     handleSubmit={submitHandler}/>
-          <TodoList todos={this.state.todos}/>
+          <TodoList todos={this.state.todos} handleToggle={this.handleToggle}/>
         </div>
       </div>
     )
