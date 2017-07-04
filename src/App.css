@@ -43,6 +43,19 @@ li {
   list-style-type: none;
 }
 
+li span.remove-item{
+  visibility: hidden;
+}
+
+span.remove-item a{
+  color:red;
+  text-decoration: none;
+}
+
+li:hover span.remove-item{
+  visibility: visible;
+}
+
 .error{
   color:red;
 }
