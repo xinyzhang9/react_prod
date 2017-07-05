@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {TodoForm, TodoList, Footer} from './Components/Todo'
 import './App.css';
-import {addTodo,generateID,findById, toggleTodo, updateTodo, removeTodo} from './lib/TodoHelpers'
+import {addTodo,generateID,findById, toggleTodo, updateTodo, removeTodo, filterTodos} from './lib/TodoHelpers'
 import {pipe,partial} from './lib/utils'
 
 class App extends Component {
@@ -12,6 +12,10 @@ class App extends Component {
       {id:3,name:'Ship it',isComplete:false}
     ],
     currentTodo: ''
+  }
+
+  static contextTypes = {
+    route: React.PropTypes.string
   }
 
   handleRemove = (id, e) => {
@@ -53,6 +57,7 @@ class App extends Component {
   }
   render(){
     const submitHandler = this.state.currentTodo? this.handleSubmit : this.handleEmptySubmit;
+    const displayTodos= filterTodos(this.state.todos, this.context.route)
     return (
       <div className='App'>
         <div className='App-header'>
@@ -60,10 +65,14 @@ class App extends Component {
         </div>
         <div className='Todo-App'>
         {this.state.errorMessage && <span className='error'>{this.state.errorMessage}</span>}
-          <TodoForm handleInputChange={this.handleInputChange}
-                    currentTodo={this.state.currentTodo}
-                    handleSubmit={submitHandler}/>
-          <TodoList todos={this.state.todos} handleToggle={this.handleToggle} handleRemove={this.handleRemove}/>
+          <TodoForm
+            handleInputChange={this.handleInputChange}
+            currentTodo={this.state.currentTodo}
+            handleSubmit={submitHandler}/>
+          <TodoList
+            todos={displayTodos}
+            handleToggle={this.handleToggle}
+            handleRemove={this.handleRemove}/>
           <Footer />
         </div>
       </div>
