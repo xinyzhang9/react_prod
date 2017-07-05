@@ -1,8 +1,10 @@
 /*.App {
   text-align: center;
 }*/
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 .App {
   text-align: center;
+  font-family: 'Roboto', sans-serif;
 }
 
 .App-logo {
@@ -58,4 +60,17 @@ li:hover span.remove-item{
 
 .error{
   color:red;
+}
+
+.Footer a{
+  padding-left: 2px;
+  padding-right: 2px;
+  text-decoration: none;
+}
+.Footer a:hover{
+  color:red;
+}
+
+.Footer a.active{
+  font-weight: bold;
 }
